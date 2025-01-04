@@ -9,7 +9,7 @@ import sys
 import os
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
-SAMPLE_SPREADSHEET_ID = "1b_pkZIbi_hHoIq2XyxQ9qsS3GDziH3nTPQeFxwEif3c"
+SAMPLE_SPREADSHEET_ID = "***********************"
 SHEET_NAME = "Página1"
 
 def resource_path(relative_path):
