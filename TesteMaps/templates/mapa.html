@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapa de Rotas</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdxdDa15HOkt0ryLCADFigFIAaaSN1bGo&callback=initMap" async defer></script>
+    <script>
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 6,
+            center: {lat: -23.55052, lng: -46.633308} // Initial point
+        });
+
+        var directionsService = new google.maps.DirectionsService();
+        var directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
+
+        var resultado = {{ resultado|tojson }};
+        var request = {
+            origin: resultado.rota_json[0].legs[0].start_address,
+            destination: resultado.rota_json[0].legs[resultado.rota_json[0].legs.length - 1].end_address,
+            waypoints: resultado.rota_json[0].legs.slice(1, -1).map(leg => ({ location: leg.end_address, stopover: true })),
+            travelMode: 'DRIVING',
+            optimizeWaypoints: true
+        };
+
+        directionsService.route(request, function(result, status) {
+            if (status == 'OK') {
+                directionsRenderer.setDirections(result);
+
+                // Display route information
+                var route = result.routes[0].legs;
+                var totalDistance = 0;
+                var totalDuration = 0;
+
+                for (var i = 0; i < route.length; i++) {
+                    totalDistance += route[i].distance.value;
+                    totalDuration += route[i].duration.value;
+                }
+
+                totalDistance = (totalDistance / 1000).toFixed(2);
+                totalDuration = (totalDuration / 60).toFixed(2);
+
+                // Update HTML elements with locations
+                document.getElementById('origem').innerHTML = `<p class="bold">Origem: ${request.origin}</p>`;
+                document.getElementById('destino').innerHTML = `<p class="bold">Destino: ${request.destination}</p>`;
+
+                var paradasContainer = document.getElementById('paradas');
+                paradasContainer.innerHTML = ""; // Clear previous content
+                request.waypoints.forEach((wp, index) => {
+                    var paradaBox = document.createElement('div');
+                    paradaBox.className = 'info-box';
+                    paradaBox.innerHTML = `<p class="highlight">Parada ${index + 1}: ${wp.location}</p>`;
+                    paradasContainer.appendChild(paradaBox);
+                });
+            }
+        });
+    }
+</script>
+</head>
+<body onload="initMap()">
+    <header>
+        <h1> Mapa das entregas - Fabiana Móveis</h1>
+    </header>
+    <div id="map"></div>
+    <div id="info"></div>
+    <div id="rota-info">
+        <h2>Informações da Rota</h2>
+        <div class="info-box">
+            <p id="origem"></p>
+        </div>
+        <div id="paradas"></div>
+        <div class="info-box">
+            <p id="destino"></p>
+        </div>
+        <div class="info-box">
+            <p class="highlight">Distância total: {{ resultado['distancia_km'] }} km -</p>
+            <p class="highlight">---- Tempo total: {{ resultado['duracao_minutos'] }} minutos</p>
+        </div>
+    </div>
+</body>
+</html>
