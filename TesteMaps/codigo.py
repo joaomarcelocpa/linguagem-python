@@ -1,7 +1,7 @@
 import googlemaps
 import csv
 
-API_KEY = "AIzaSyDdxdDa15HOkt0ryLCADFigFIAaaSN1bGo"
+API_KEY = "*****"
 gmaps = googlemaps.Client(key=API_KEY)
 
 def ler_enderecos(arquivo_csv):
