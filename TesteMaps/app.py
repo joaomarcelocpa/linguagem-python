@@ -33,6 +33,7 @@ def index():
 def cadastrar_entregas():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
+    success_message = None
     if request.method == 'POST':
         rua = request.form['rua']
         numero = request.form['numero']
@@ -42,8 +43,8 @@ def cadastrar_entregas():
         with open('enderecos.csv', mode='a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow([rua, numero, bairro, cidade, estado])
-        return "Endereço cadastrado com sucesso!"
-    return render_template('cadastrar_entregas.html')
+        success_message = "Endereço cadastrado com sucesso!"
+    return render_template('cadastrar_entregas.html', success_message=success_message)
 
 @app.route('/criar_rota')
 def criar_rota():

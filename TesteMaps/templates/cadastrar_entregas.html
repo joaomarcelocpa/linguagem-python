@@ -7,6 +7,9 @@
 <body>
     {% include 'header.html' %}
     <form method="post" action="{{ url_for('cadastrar_entregas') }}">
+        {% if success_message %}
+            <div class="success-message">{{ success_message }}</div>
+        {% endif %}
         <div class="info-box">
             <label for="rua">Rua:</label>
             <input type="text" id="rua" name="rua" required>
