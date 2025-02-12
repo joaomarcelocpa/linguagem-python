@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="button-container">
+        <button onclick="window.location.href='{{ url_for('cadastrar_entregas') }}'">Cadastrar Entregas</button>
+        <button onclick="window.location.href='{{ url_for('criar_rota') }}'">Criar Rota</button>
+        <button onclick="window.location.href='{{ url_for('gerar_relatorios') }}'">Gerar Relatórios</button>
+        <button onclick="window.location.href='{{ url_for('ver_rotas_recentes') }}'">Ver Rotas Recentes</button>
+    </div>
+</body>
+</html>

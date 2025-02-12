@@ -1,7 +1,7 @@
 import googlemaps
 import csv
 
-API_KEY = "*"
+API_KEY = "AIzaSyDdxdDa15HOkt0ryLCADFigFIAaaSN1bGo"
 gmaps = googlemaps.Client(key=API_KEY)
 
 def ler_enderecos(arquivo_csv):
@@ -9,7 +9,7 @@ def ler_enderecos(arquivo_csv):
     with open(arquivo_csv, mode='r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         for row in reader:
-            if any(row.values()):  # Verifica se a linha não está em branco
+            if any(row.values()):
                 endereco = f"{row['Rua']}, {row['Número']}, {row['Bairro']}, {row['Cidade']}, {row['Estado']}"
                 enderecos.append(endereco)
     return enderecos
@@ -30,10 +30,10 @@ def calcular_rota(endereco_origem, endereco_destino, paradas=[]):
     if not rota:
         return "Nenhuma rota encontrada"
 
-    # Pegando a duração e a distância total
+
     rota_info = rota[0]['legs']
-    distancia_total = sum(leg['distance']['value'] for leg in rota_info) / 1000  # Convertendo metros para km
-    duracao_total = sum(leg['duration']['value'] for leg in rota_info) / 60  # Convertendo segundos para minutos
+    distancia_total = sum(leg['distance']['value'] for leg in rota_info) / 1000
+    duracao_total = sum(leg['duration']['value'] for leg in rota_info) / 60
 
     return {
         "distancia_km": round(distancia_total, 2),
@@ -41,7 +41,6 @@ def calcular_rota(endereco_origem, endereco_destino, paradas=[]):
         "rota_json": rota
     }
 
-# Exemplo de uso
 enderecos = ler_enderecos('enderecos.csv')
 origem = enderecos[0]
 destino = enderecos[-1]

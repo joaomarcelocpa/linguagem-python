@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastrar Entregas</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% include 'header.html' %}
+    <form method="post" action="{{ url_for('cadastrar_entregas') }}">
+        <div class="info-box">
+            <label for="rua">Rua:</label>
+            <input type="text" id="rua" name="rua" required>
+        </div>
+        <div class="info-box">
+            <label for="numero">Número:</label>
+            <input type="text" id="numero" name="numero" required>
+        </div>
+        <div class="info-box">
+            <label for="bairro">Bairro:</label>
+            <input type="text" id="bairro" name="bairro" required>
+        </div>
+        <div class="info-box">
+            <label for="cidade">Cidade:</label>
+            <input type="text" id="cidade" name="cidade" required>
+        </div>
+        <div class="info-box">
+            <label for="estado">Estado:</label>
+            <input type="text" id="estado" name="estado" required>
+        </div>
+        <div class="button-container">
+            <button type="button" onclick="window.location.href='{{ url_for('index') }}'">Voltar</button>
+            <button type="submit">Adicionar Nova Entrega</button>
+        </div>
+    </form>
+</body>
+</html>
